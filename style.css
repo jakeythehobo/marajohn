@@ -1,0 +1,419 @@
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=IBM+Plex+Mono:wght@400;700&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=Space+Mono:wght@400;700&display=swap');
+
+:root {
+    --bg-color: #000000;
+    --primary-blue: #0080ff; /* Classic Windows Blue / MARAJOHN HUD Blue */
+    --highlight-blue: #00ffff;
+    --highlight-yellow: #edff00;
+    --terminal-green: #33ff33; /* For alerts maybe */
+    --exfiltrated-color: #ccff00; /* Vibrant Lime Green */
+    --eliminated-color: #ff0000; /* Red */
+    --screb-color: #ff33ff; /* Bright Magenta */
+    --kless-color: #ccff00; /* Vibrant Lime Green */
+    --degraded-color: #edff00; /* Yellow */
+    --offline-color: #555555; /* Dark gray for offline systems */
+    --user-cmd-color: #00ff00;
+    --border-width: 2px;
+    --text-font: 'IBM Plex Mono', 'Courier Prime', monospace;
+    --logo-font: 'Old Standard TT', serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body.high-contrast {
+    background-color: var(--bg-color);
+    color: var(--primary-blue);
+    font-family: var(--text-font), serif;
+    line-height: 1.5;
+    height: 100vh;
+    height: -webkit-fill-available; /* Safari viewport height fix */
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    border: 10px solid var(--primary-blue);
+}
+
+html {
+    height: -webkit-fill-available;
+}
+
+header.terminal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: var(--border-width) solid var(--primary-blue);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.logo {
+    font-family: var(--logo-font), serif;
+    font-size: 2rem;
+    font-weight: 400;
+    letter-spacing: 2px;
+    color: var(--highlight-yellow);
+}
+
+.header-info {
+    font-size: 0.8rem;
+    text-align: right;
+}
+
+.terminal-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    border: var(--border-width) solid var(--primary-blue);
+    background-color: rgba(0, 0, 0, 0.8);
+    position: relative;
+    padding: 20px;
+    box-shadow: inset 0 0 50px rgba(0, 128, 255, 0.2);
+    min-height: 0; /* Ensure container can shrink to fit parent flex */
+}
+
+.terminal-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+            rgba(18, 16, 16, 0) 50%,
+            rgba(0, 0, 0, 0.25) 50%
+    ), linear-gradient(
+            90deg,
+            rgba(255, 0, 0, 0.06),
+            rgba(0, 255, 0, 0.02),
+            rgba(0, 0, 255, 0.06)
+    );
+    background-size: 100% 4px, 3px 100%;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.terminal-output {
+    flex: 1;
+    overflow-y: auto;
+    font-size: 1.1rem;
+    min-height: 0; /* Important for flex child scrolling */
+    scrollbar-width: thin; /* For Firefox */
+    scrollbar-gutter: stable; /* Prevent layout shift when scrollbar appears */
+}
+
+/* Fix for smooth scrolling if desired, but more importantly, ensure it doesn't overlap */
+.terminal-output > * {
+    overflow-anchor: none;
+}
+
+.line {
+    margin-bottom: 5px;
+}
+
+.highlight {
+    color: var(--highlight-blue);
+    font-weight: bold;
+}
+
+.status-msg {
+    color: var(--bg-color);
+    background-color: var(--primary-blue);
+    display: inline-block;
+    padding: 2px 10px;
+    font-weight: bold;
+}
+
+.terminal-nav {
+    margin-top: 30px;
+    border-top: var(--border-width) solid var(--primary-blue);
+    padding-top: 20px;
+}
+
+.terminal-nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.terminal-nav a {
+    color: var(--primary-blue);
+    text-decoration: none;
+    font-weight: bold;
+    border: 1px solid transparent;
+    padding: 5px 10px;
+    transition: all 0.2s ease;
+}
+
+.terminal-nav a:hover {
+    background-color: var(--primary-blue);
+    color: var(--bg-color);
+}
+
+footer.terminal-footer {
+    margin-top: 20px;
+    padding-top: 10px;
+    border-top: var(--border-width) solid var(--primary-blue);
+    font-size: 0.7rem;
+    display: flex;
+    justify-content: center;
+}
+
+/* Scrollbar for the terminal look */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-color);
+    border-left: 1px solid var(--primary-blue);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary-blue);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--highlight-blue);
+}
+
+#loading-screen .terminal-output {
+    display: flex;
+    flex-direction: column;
+}
+
+.login-btn {
+    color: var(--primary-blue);
+    font-weight: bold;
+    border: 1px solid var(--primary-blue);
+    padding: 10px 20px;
+    font-size: 1.5rem;
+    animation: pulse 2s infinite;
+    cursor: pointer;
+    outline: none;
+}
+
+.login-btn:focus {
+    background-color: var(--primary-blue);
+    color: var(--bg-color);
+}
+
+/* Blinking cursor effect */
+.terminal-output > .line:last-child::after {
+    content: "_";
+    animation: blink 1s step-end infinite;
+}
+
+#loading-screen .line::after {
+    content: "_";
+    animation: blink 1s step-end infinite;
+}
+
+#loading-screen .line:not(:last-child)::after {
+    content: "";
+    animation: none;
+}
+
+.input-line {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.input-line label {
+    color: var(--highlight-blue);
+    font-weight: bold;
+}
+
+#terminal-input {
+    background: transparent;
+    border: none;
+    color: var(--primary-blue);
+    font-family: var(--text-font), monospace;
+    font-size: 1.1rem;
+    outline: none;
+    flex: 1;
+    caret-color: transparent; /* We'll use our own cursor */
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    flex: 1;
+}
+
+.input-wrapper::after {
+    content: "_";
+    position: absolute;
+    left: calc(var(--cursor-pos) * 1.06ch); /* Slight adjustment for better Safari/Chrome 1ch consistency */
+    animation: blink 1s step-end infinite;
+    pointer-events: none;
+}
+
+/* USER COMMANDS */
+.line.user-cmd {
+    color: var(--user-cmd-color);
+    font-weight: bold;
+}
+
+@keyframes blink {
+    from, to {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+/* CRITICAL STATE */
+.line.critical {
+    color: red;
+    animation: pulse 2s infinite;
+}
+
+.line.exfiltrated, .status.exfiltrated {
+    color: var(--exfiltrated-color);
+}
+
+.line.eliminated, .status.eliminated {
+    color: var(--eliminated-color);
+}
+
+.status-summary {
+    font-weight: bold;
+    margin-top: 10px;
+    border-top: 1px dashed var(--primary-blue);
+    padding-top: 5px;
+}
+
+.status-summary.screb {
+    color: var(--screb-color);
+}
+
+.status-summary.kless {
+    color: var(--kless-color);
+}
+
+.log-entry {
+    display: grid;
+    grid-template-columns: 180px 80px 100px 1fr;
+    font-size: 0.9rem;
+    padding: 2px 0;
+    gap: 10px;
+}
+
+.log-entry .status {
+    font-weight: bold;
+    text-align: right;
+}
+
+/* SYSTEMS SECTION */
+.systems-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.system-panel {
+    border: 1px solid var(--primary-blue);
+    padding: 10px;
+    background-color: rgba(0, 128, 255, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.system-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--primary-blue);
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 0.85rem;
+}
+
+.system-panel .status {
+    font-size: 0.75rem;
+    padding: 1px 5px;
+}
+
+.system-panel .status.online {
+    color: var(--highlight-blue);
+}
+
+.system-panel .status.degraded {
+    color: var(--degraded-color);
+}
+
+.system-panel .status.offline {
+    color: var(--offline-color, #555555);
+}
+
+.system-panel .status.critical {
+    color: var(--eliminated-color);
+}
+
+.system-data {
+    font-size: 0.8rem;
+    color: var(--primary-blue);
+}
+
+.system-bar-container {
+    width: 100%;
+    height: 6px;
+    border: 1px solid var(--primary-blue);
+    margin: 4px 0;
+}
+
+.system-bar {
+    height: 100%;
+    background-color: var(--primary-blue);
+}
+
+.system-bar.warning {
+    background-color: var(--degraded-color);
+}
+
+.system-bar.danger {
+    background-color: var(--eliminated-color);
+}
+
+.system-diagnostic {
+    font-size: 0.7rem;
+    line-height: 1.2;
+    color: var(--highlight-blue);
+    opacity: 0.8;
+}
+
+.systems-footer {
+    border-top: 1px dashed var(--primary-blue);
+    padding-top: 10px;
+    margin-top: 10px;
+    font-size: 0.8rem;
+}
+
+.alert-line {
+    color: var(--eliminated-color);
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 1;
+    }
+}

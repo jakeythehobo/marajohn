@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>MaraJohn Terminal</title>
+    <link href="style.css" rel="stylesheet">
+</head>
+<body class="high-contrast">
+<div class="terminal-container" id="loading-screen">
+    <section class="terminal-output" id="loading-output">
+        <!-- Loading messages will appear here -->
+    </section>
+</div>
+
+<header class="terminal-header" style="display: none;">
+    <div class="logo">MaraJohn</div>
+    <div class="header-info">TERMINAL ACCESS: 0x42A-7</div>
+</header>
+
+<main class="terminal-container" style="display: none;">
+    <section class="terminal-output">
+        <div class="line highlight">*** TERMINAL ACCESS GRANTED ***</div>
+        <div class="line">SYSTEM: ERSE MARAJOHN AI UNIT [PORTER]</div>
+        <div class="line">LOCATION: OOP NORF SYSTEM</div>
+        <div class="line" id="date-line">DATE: ----.--.--</div>
+        <div class="line" id="time-line">TIME: --:-- ErseTC</div>
+        <br>
+        <div class="line">> WELCOME, SECURITY OFFICER.</div>
+        <div class="line">> THE ERSE ARE BOARDING THE SHIP.</div>
+        <div class="line">> YOU ARE OUR ONLY HOPE.</div>
+        <br>
+        <div class="line status-msg">[STATUS: CRITICAL] [OXYGEN: 87%] [ERSE: 100%]</div>
+        <div id="terminal-history"></div>
+        <div class="input-line">
+            <label for="terminal-input">></label>
+            <div class="input-wrapper" style="--cursor-pos: 0;">
+                <input autocomplete="off" autofocus id="terminal-input" spellcheck="false" type="text">
+            </div>
+        </div>
+    </section>
+
+    <nav class="terminal-nav">
+        <ul>
+            <li><a href="#">[ MISSION LOGS ]</a></li>
+            <li><a href="#">[ PERSONNEL ]</a></li>
+            <li><a href="#">[ SYSTEMS ]</a></li>
+            <li><a href="#">[ LOGOUT ]</a></li>
+        </ul>
+    </nav>
+</main>
+
+<footer class="terminal-footer" style="display: none;">
+    <div class="footer-text" id="footer-text">© ---- UNITED ERSE SPACE COUNCIL - MARAJOHN AEROSPACE</div>
+</footer>
+<script src="index.js"></script>
+</body>
+</html>
